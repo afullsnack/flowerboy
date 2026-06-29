@@ -1,0 +1,462 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Content Monetization With Flowerboy">
+  <link
+    slot="head"
+    href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style is:global>
+    :root{
+      --cream:#FFF6EC;
+      --ink:#1C1410;
+      --ink-soft:#5C5048;
+      --flame:#FF5F1F;
+      --amber:#FFB347;
+      --ember:#C2410C;
+      --line:#E8D9C5;
+      --line-dark:#3A2E26;
+    }
+    *{box-sizing:border-box; margin:0; padding:0;}
+    html{-webkit-font-smoothing:antialiased;}
+    body{
+      font-family:'Inter', sans-serif;
+      background:var(--cream);
+      color:var(--ink);
+      line-height:1.5;
+    }
+    .wrap{max-width:480px; margin:0 auto; padding:0 22px;}
+    .mono{font-family:'Space Mono', monospace;}
+    .display{font-family:'Archivo Black', sans-serif; font-weight:400;}
+
+    @media (prefers-reduced-motion: no-preference){
+      .flame-stroke{ animation: drawFlame 1.1s 0.2s ease-out forwards; }
+    }
+    @keyframes drawFlame{
+      from{ stroke-dashoffset:260; }
+      to{ stroke-dashoffset:0; }
+    }
+
+    /* ===== NAV ===== */
+    nav{
+      padding:18px 22px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      border-bottom:1px solid var(--line);
+    }
+    .nav-brand{display:flex; align-items:center; gap:8px;}
+    .nav-brand .flame-dot{
+      width:9px; height:9px; border-radius:50% 50% 50% 0;
+      background:var(--flame);
+      transform:rotate(45deg);
+    }
+    .nav-brand span{font-size:13px; font-weight:700; letter-spacing:0.4px;}
+    .nav-cta{
+      font-family:'Space Mono', monospace;
+      font-size:11px;
+      color:var(--cream);
+      background:var(--ink);
+      padding:8px 13px;
+      border-radius:999px;
+      text-decoration:none;
+      white-space:nowrap;
+    }
+
+    /* ===== HERO ===== */
+    .hero{padding:40px 0 36px;}
+    .eyebrow-mono{
+      font-family:'Space Mono', monospace;
+      font-size:11px;
+      color:var(--ember);
+      letter-spacing:1px;
+      text-transform:uppercase;
+      margin-bottom:16px;
+      display:flex; align-items:center; gap:8px;
+    }
+    .eyebrow-mono::before{content:"●"; color:var(--flame); font-size:9px;}
+    .hero h1{
+      font-family:'Archivo Black', sans-serif;
+      font-size:38px;
+      line-height:1.08;
+      letter-spacing:-0.5px;
+      margin-bottom:18px;
+    }
+    .hero h1 .accent-wrap{position:relative; display:inline-block;}
+    .hero h1 .accent-wrap svg{
+      position:absolute;
+      left:-2%; bottom:-6px;
+      width:104%; height:18px;
+    }
+    .hero p.lede{
+      font-size:15.5px;
+      color:var(--ink-soft);
+      max-width:380px;
+      margin-bottom:26px;
+    }
+    .stat-strip{
+      display:flex;
+      gap:10px;
+    }
+    .stat-chip{
+      flex:1;
+      background:var(--ink);
+      color:var(--cream);
+      border-radius:10px;
+      padding:12px 10px;
+      text-align:center;
+    }
+    .stat-chip .num{font-family:'Space Mono', monospace; font-weight:700; font-size:18px; color:var(--amber);}
+    .stat-chip .lbl{font-size:10px; color:var(--cream); opacity:0.75; letter-spacing:0.3px; margin-top:2px;}
+
+    /* ===== SECTIONS ===== */
+    section{padding:46px 0;}
+    .section-dark{background:var(--ink); color:var(--cream);}
+    .section-dark .eyebrow-mono{color:var(--amber);}
+    .section-dark .eyebrow-mono::before{color:var(--flame);}
+    .section-title{
+      font-family:'Archivo Black', sans-serif;
+      font-size:24px;
+      line-height:1.15;
+      margin-bottom:22px;
+    }
+    .section-sub{font-size:13.5px; color:var(--ink-soft); margin-top:-14px; margin-bottom:22px;}
+    .section-dark .section-sub{color:rgba(255,246,236,0.65);}
+
+    /* ===== TICKET CARDS (courses) ===== */
+    .ticket{
+      background:var(--cream);
+      color:var(--ink);
+      border-radius:14px;
+      margin-bottom:18px;
+      position:relative;
+      box-shadow:0 14px 30px -12px rgba(0,0,0,0.35);
+    }
+    .ticket.best{border:2px solid var(--flame);}
+    .ticket-badge{
+      position:absolute;
+      top:-11px; left:18px;
+      background:var(--flame);
+      color:var(--cream);
+      font-family:'Space Mono', monospace;
+      font-weight:700;
+      font-size:10.5px;
+      letter-spacing:0.5px;
+      padding:4px 10px;
+      border-radius:999px;
+    }
+    .ticket-body{padding:22px 20px 0;}
+    .ticket-row{display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:8px;}
+    .ticket-title{font-family:'Archivo Black', sans-serif; font-size:16px; line-height:1.25;}
+    .ticket-price{
+      font-family:'Space Mono', monospace;
+      font-weight:700;
+      font-size:17px;
+      color:var(--ember);
+      white-space:nowrap;
+    }
+    .ticket-body p.desc{font-size:13px; color:var(--ink-soft); margin-bottom:16px;}
+    .perf{
+      position:relative;
+      border-top:2px dashed var(--line);
+      margin:0 0px;
+    }
+    .perf::before, .perf::after{
+      content:"";
+      position:absolute; top:-9px;
+      width:18px; height:18px;
+      background:var(--ink);
+      border-radius:50%;
+    }
+    .perf::before{left:-9px;}
+    .perf::after{right:-9px;}
+    .ticket-stub{padding:14px 20px 18px;}
+    .ticket-stub label{
+      display:flex; align-items:center; gap:9px;
+      font-size:13px; margin-bottom:9px;
+    }
+    .ticket-stub input[type=checkbox]{width:16px; height:16px; accent-color:var(--flame);}
+    #pickHint{font-family:'Space Mono', monospace; font-size:11px; color:var(--ink-soft); margin-bottom:12px;}
+
+    .buy-btn{
+      width:100%;
+      background:var(--flame);
+      color:var(--cream);
+      border:none;
+      border-radius:10px;
+      padding:14px;
+      font-family:'Archivo Black', sans-serif;
+      font-size:13.5px;
+      letter-spacing:0.3px;
+      cursor:pointer;
+      margin-bottom:18px;
+    }
+    .buy-btn:disabled{background:#D9CDBE; color:#8A7E72;}
+    .buy-btn:active:not(:disabled){transform:translateY(1px);}
+    .buy-btn.dark{background:var(--ink); color:var(--amber);}
+
+    /* ===== RECEIPT CARDS (books) ===== */
+    .receipt{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:4px;
+      margin-bottom:16px;
+      padding:18px 18px 16px;
+      position:relative;
+    }
+    .receipt::before{
+      content:"";
+      position:absolute; top:0; left:14px; right:14px; height:0;
+      border-top:1px dashed var(--line);
+    }
+    .receipt-head{font-family:'Space Mono', monospace; font-size:10.5px; color:var(--ink-soft); letter-spacing:1px; margin-bottom:10px;}
+    .receipt-row{display:flex; justify-content:space-between; margin-bottom:6px; font-size:14px;}
+    .receipt-row.total{
+      border-top:1px dashed var(--line);
+      margin-top:10px; padding-top:10px;
+      font-family:'Space Mono', monospace; font-weight:700;
+    }
+    .receipt p.desc{font-size:12.5px; color:var(--ink-soft); margin:10px 0 14px;}
+
+    /* ===== STEPS ===== */
+    .steps{display:flex; flex-direction:column; gap:14px;}
+    .step{display:flex; gap:14px; align-items:flex-start;}
+    .step .step-num{
+      font-family:'Space Mono', monospace;
+      font-weight:700;
+      font-size:13px;
+      color:var(--ink);
+      background:var(--amber);
+      border-radius:6px;
+      width:30px; height:30px;
+      flex-shrink:0;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .step h4{font-size:14.5px; font-weight:700; margin-bottom:3px; color:var(--cream);}
+    .step p{font-size:13px; color:rgba(255,246,236,0.7); margin:0;}
+
+    .note{
+      background:rgba(255,179,71,0.12);
+      border:1px solid rgba(255,179,71,0.3);
+      border-radius:10px;
+      padding:14px 16px;
+      font-size:12.5px;
+      color:rgba(255,246,236,0.85);
+      margin-top:24px;
+    }
+    .note b{color:var(--amber);}
+
+    footer{
+      background:var(--ink);
+      text-align:center;
+      padding:30px 22px 44px;
+      color:rgba(255,246,236,0.6);
+      font-size:12px;
+    }
+    footer .foot-brand{
+      font-family:'Archivo Black', sans-serif;
+      color:var(--cream);
+      font-size:15px;
+      margin-bottom:10px;
+    }
+    footer a{
+      color:var(--amber);
+      text-decoration:none;
+      font-weight:700;
+    }
+
+    /* ===== MODAL ===== */
+    #payModal{display:none; position:fixed; inset:0; background:rgba(28,20,16,0.6); z-index:50; align-items:center; justify-content:center; padding:20px;}
+    #payModal .modal-card{
+      background:var(--cream);
+      border-radius:14px;
+      padding:26px 22px;
+      max-width:360px;
+      text-align:center;
+      border-top:4px solid var(--flame);
+    }
+    #payModal .check{font-family:'Archivo Black', sans-serif; color:var(--ember); font-size:17px; margin-bottom:10px;}
+    #payModalText{font-size:13.5px; color:var(--ink-soft); margin-bottom:18px;}
+    .modal-cta{
+      display:block; background:var(--ink); color:var(--cream);
+      padding:13px; border-radius:10px; font-weight:700; text-decoration:none;
+      font-family:'Archivo Black', sans-serif; font-size:13px; margin-bottom:10px;
+    }
+    .modal-close{background:none; border:none; color:var(--ink-soft); font-size:12.5px; text-decoration:underline; cursor:pointer;}
+  </style>
+
+  <nav>
+    <div class="nav-brand"><span class="flame-dot"></span><span>FLOWERBOY</span></div>
+    <a class="nav-cta" href="https://wa.me/2347077191980" target="_blank">MESSAGE US →</a>
+  </nav>
+
+  <div class="hero wrap">
+    <div class="eyebrow-mono">CONTENT MONETIZATION</div>
+    <h1>
+      Turn your content into
+      <span class="accent-wrap">income
+        <svg viewBox="0 0 200 18" preserveAspectRatio="none">
+          <path class="flame-stroke" d="M2 14 C 40 4, 90 2, 130 9 S 185 16, 198 6"
+                fill="none" stroke="#FF5F1F" stroke-width="6" stroke-linecap="round"
+                stroke-dasharray="260" stroke-dashoffset="260"/>
+        </svg>
+      </span>.
+    </h1>
+    <p class="lede">Courses and books on content creation, Facebook marketing, AI content, and YouTube monetization — taught by Flowerboy, built for creators who are done guessing.</p>
+
+    <div class="stat-strip">
+      <div class="stat-chip"><div class="num">04</div><div class="lbl">COURSES</div></div>
+      <div class="stat-chip"><div class="num">02</div><div class="lbl">BOOKS</div></div>
+      <div class="stat-chip"><div class="num">01</div><div class="lbl">PAYMENT</div></div>
+    </div>
+  </div>
+
+  <section class="section-dark">
+    <div class="wrap">
+      <div class="eyebrow-mono">PICK YOUR LANE</div>
+      <div class="section-title">Choose your access</div>
+
+      <div class="ticket best">
+        <div class="ticket-badge">BEST VALUE</div>
+        <div class="ticket-body">
+          <div class="ticket-row">
+            <div class="ticket-title">All 4 Courses<br>Full Access</div>
+            <div class="ticket-price">₦50,000</div>
+          </div>
+          <p class="desc">Content Creation Mastery, Facebook Marketing, AI Content Development &amp; Monetization, and YouTube Monetization — everything, one payment.</p>
+        </div>
+        <div class="perf"></div>
+        <div class="ticket-stub">
+          <button class="buy-btn" style="margin-top:14px;" onclick="payFor(50000,'All 4 Courses Bundle')">BUY FULL BUNDLE — ₦50,000</button>
+        </div>
+      </div>
+
+      <div class="ticket">
+        <div class="ticket-body">
+          <div class="ticket-row">
+            <div class="ticket-title">Pick Any 2<br>Courses</div>
+            <div class="ticket-price">₦30,000</div>
+          </div>
+          <p class="desc">Not ready for all 4? Choose exactly 2 to start with.</p>
+        </div>
+        <div class="perf"></div>
+        <div class="ticket-stub">
+          <label><input type="checkbox" class="course-pick" value="Content Creation Mastery" onchange="updatePickCount()"> Content Creation Mastery</label>
+          <label><input type="checkbox" class="course-pick" value="Facebook Marketing" onchange="updatePickCount()"> Facebook Marketing</label>
+          <label><input type="checkbox" class="course-pick" value="AI Content Development & Monetization" onchange="updatePickCount()"> AI Content Development &amp; Monetization</label>
+          <label><input type="checkbox" class="course-pick" value="YouTube Content & Monetization" onchange="updatePickCount()"> YouTube Content &amp; Monetization</label>
+          <p id="pickHint">SELECT EXACTLY 2 TO CONTINUE (0/2)</p>
+          <button class="buy-btn dark" id="pickBtn" disabled onclick="payForSelectedCourses()">BUY SELECTED — ₦30,000</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="eyebrow-mono">GO DEEPER</div>
+      <div class="section-title">Books</div>
+
+      <div class="receipt">
+        <div class="receipt-head">RECEIPT · ITEM 001</div>
+        <div class="receipt-row"><span>The Creator's Paycheck</span></div>
+        <p class="desc">A practical walkthrough of every income stream open to a content creator right now — and how to actually qualify for each one.</p>
+        <div class="receipt-row total"><span>TOTAL</span><span>₦20,000</span></div>
+        <button class="buy-btn" style="margin-top:14px; margin-bottom:0;" onclick="payFor(20000,&quot;The Creator's Paycheck&quot;)">BUY BOOK — ₦20,000</button>
+      </div>
+
+      <div class="receipt">
+        <div class="receipt-head">RECEIPT · ITEM 002</div>
+        <div class="receipt-row"><span>From Followers to Funds</span></div>
+        <p class="desc">A step-by-step guide to converting an audience on Facebook, Instagram, and YouTube into consistent, repeatable income.</p>
+        <div class="receipt-row total"><span>TOTAL</span><span>₦20,000</span></div>
+        <button class="buy-btn" style="margin-top:14px; margin-bottom:0;" onclick="payFor(20000,'From Followers to Funds')">BUY BOOK — ₦20,000</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-dark">
+    <div class="wrap">
+      <div class="eyebrow-mono">AFTER YOU PAY</div>
+      <div class="section-title" style="font-size:21px;">How delivery works</div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">01</div>
+          <div><h4>Pay securely via Paystack</h4><p>Card, bank transfer, or USSD — whichever is easiest for you.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <div><h4>Send your payment confirmation</h4><p>Message Flowerboy on WhatsApp with your name and what you bought.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <div><h4>Get access</h4><p>Course link or book file is sent to you directly — usually within a few hours.</p></div>
+        </div>
+      </div>
+      <div class="note"><b>Note:</b> delivery is handled personally by Flowerboy, so keep your receipt and message right after paying for the fastest access.</div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot-brand">FLOWERBOY</div>
+    Questions or already paid?<br>
+    <a href="https://wa.me/2347077191980" target="_blank">Message on WhatsApp →</a>
+  </footer>
+
+  <div id="payModal">
+    <div class="modal-card">
+      <p class="check">✓ PAYMENT RECEIVED</p>
+      <p id="payModalText"></p>
+      <a class="modal-cta" href="https://wa.me/2347077191980" target="_blank">MESSAGE FLOWERBOY ON WHATSAPP</a>
+      <button class="modal-close" onclick="document.getElementById('payModal').style.display='none'">Close</button>
+    </div>
+  </div>
+
+  <script is:inline src="https://js.paystack.co/v1/inline.js"></script>
+  <script is:inline>
+    function updatePickCount() {
+      var checked = document.querySelectorAll('.course-pick:checked');
+      var hint = document.getElementById('pickHint');
+      var btn = document.getElementById('pickBtn');
+
+      if (checked.length > 2) {
+        checked[checked.length - 1].checked = false;
+        checked = document.querySelectorAll('.course-pick:checked');
+      }
+
+      hint.textContent = 'SELECT EXACTLY 2 TO CONTINUE (' + checked.length + '/2)';
+      if (checked.length === 2) {
+        btn.disabled = false;
+      } else {
+        btn.disabled = true;
+      }
+    }
+
+    function payForSelectedCourses() {
+      var checked = document.querySelectorAll('.course-pick:checked');
+      if (checked.length !== 2) return;
+      var names = Array.from(checked).map(function (c) { return c.value; });
+      payFor(30000, names.join(' + '));
+    }
+
+    function payFor(amountNaira, itemName) {
+      var handler = PaystackPop.setup({
+        key: 'pk_test_7ab8e99537ac12c9e30933d7d185af42c1d892b7', // TODO: replace with your real Paystack PUBLIC key if different from Graxie's
+        email: 'customer@example.com', // TODO: collect from a form field if you want real customer emails
+        amount: amountNaira * 100,
+        currency: 'NGN',
+        metadata: { item: itemName },
+        callback: function (response) {
+          document.getElementById('payModalText').innerText =
+            'Thanks for buying "' + itemName + '". Tap below and send your receipt so Flowerboy can send your access.';
+          document.getElementById('payModal').style.display = 'flex';
+        },
+        onClose: function () {}
+      });
+      handler.openIframe();
+    }
+  </script>
+</BaseLayout>
