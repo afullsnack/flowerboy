@@ -65,6 +65,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       text-decoration:none;
       white-space:nowrap;
     }
+    .nav-actions{display:flex; align-items:center; gap:10px;}
+    .nav-cta--tg{background:#229ED9;}
 
     /* ===== HERO ===== */
     .hero{padding:40px 0 36px;}
@@ -290,7 +292,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   <nav>
     <div class="nav-brand"><span class="flame-dot"></span><span>FLOWERBOY</span></div>
-    <a class="nav-cta" href="https://wa.me/2347077191980" target="_blank">MESSAGE US →</a>
+    <div class="nav-actions">
+      <a class="nav-cta nav-cta--tg" href="https://t.me/flowergeng" target="_blank" rel="noopener">JOIN TELEGRAM →</a>
+      <a class="nav-cta" href="https://wa.me/2347077191980" target="_blank">MESSAGE US →</a>
+    </div>
   </nav>
 
   <div class="hero wrap">
