@@ -438,6 +438,39 @@ import BaseLayout from "../layouts/BaseLayout.astro";
             font-weight: 700;
         }
 
+        /* ===== TESTIMONIAL MARQUEE ===== */
+        .marquee-section {
+            overflow: hidden;
+            padding: 46px 0;
+        }
+        .marquee-section .wrap {
+            margin-bottom: 28px;
+        }
+        .marquee-track {
+            display: flex;
+            gap: 16px;
+            width: max-content;
+            animation: marquee-scroll 50s linear infinite;
+        }
+        .marquee-track:hover {
+            animation-play-state: paused;
+        }
+        .marquee-track img {
+            height: 280px;
+            width: auto;
+            border-radius: 10px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        @keyframes marquee-scroll {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
         /* ===== MODAL ===== */
         #payModal {
             display: none;
@@ -725,6 +758,29 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         </div>
     </section>
 
+    <section class="marquee-section">
+        <div class="wrap">
+            <div class="eyebrow-mono">TESTIMONIAL</div>
+            <div class="section-title">Proof from others</div>
+        </div>
+        <div class="marquee-track" aria-hidden="true">
+            <img src="/IMG_2392.JPG.jpeg" alt="" loading="lazy" />
+            <img src="/IMG_2393.JPG.jpeg" alt="" loading="lazy" />
+            <img src="/IMG_2395.JPG.jpeg" alt="" loading="lazy" />
+            <img src="/IMG_2396.JPG.jpeg" alt="" loading="lazy" />
+            <img src="/IMG_2397.JPG.jpeg" alt="" loading="lazy" />
+            <img src="/IMG_2401.JPG.jpeg" alt="" loading="lazy" />
+            <img src="/IMG_2402.JPG.jpeg" alt="" loading="lazy" />
+            <img src="/IMG_2392.JPG.jpeg" alt="" loading="lazy" />
+            <img src="/IMG_2393.JPG.jpeg" alt="" loading="lazy" />
+            <img src="/IMG_2395.JPG.jpeg" alt="" loading="lazy" />
+            <img src="/IMG_2396.JPG.jpeg" alt="" loading="lazy" />
+            <img src="/IMG_2397.JPG.jpeg" alt="" loading="lazy" />
+            <img src="/IMG_2401.JPG.jpeg" alt="" loading="lazy" />
+            <img src="/IMG_2402.JPG.jpeg" alt="" loading="lazy" />
+        </div>
+    </section>
+
     <footer>
         <div class="foot-brand">FLOWERBOY</div>
         Questions or already paid?<br />
@@ -750,48 +806,89 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         </div>
     </div>
 
-    <!-- <script is:inline src="https://js.paystack.co/v1/inline.js"></script>
-  <script is:inline>
-    function updatePickCount() {
-      var checked = document.querySelectorAll('.course-pick:checked');
-      var hint = document.getElementById('pickHint');
-      var btn = document.getElementById('pickBtn');
+    <!-- <script is:inline src="https://js.paystack.co/v1/inline.js"></script> -->
+    <script>
+        const pk = import.meta.env.PUBLIC_BAGGIT_PK;
+        const url = import.meta.env.PUBLIC_BAGGIT_API_URL;
+        const clientUrl = import.meta.env.PUBLIC_CLIENT_URL;
 
-      if (checked.length > 2) {
-        checked[checked.length - 1].checked = false;
-        checked = document.querySelectorAll('.course-pick:checked');
-      }
+        function updatePickCount() {
+            let checked = document.querySelectorAll<HTMLInputElement>(
+                ".course-pick:checked",
+            );
+            const hint = document.getElementById("pickHint")!;
+            const btn = document.getElementById("pickBtn")!;
 
-      hint.textContent = 'SELECT EXACTLY 2 TO CONTINUE (' + checked.length + '/2)';
-      if (checked.length === 2) {
-        btn.disabled = false;
-      } else {
-        btn.disabled = true;
-      }
-    }
+            if (checked.length > 2) {
+                checked[checked.length - 1].checked = false;
+                checked = document.querySelectorAll(".course-pick:checked");
+            }
 
-    function payForSelectedCourses() {
-      var checked = document.querySelectorAll('.course-pick:checked');
-      if (checked.length !== 2) return;
-      var names = Array.from(checked).map(function (c) { return c.value; });
-      payFor(30000, names.join(' + '));
-    }
+            hint.textContent =
+                "SELECT EXACTLY 2 TO CONTINUE (" + checked.length + "/2)";
+            btn.disabled = checked.length !== 2;
+        }
 
-    function payFor(amountNaira, itemName) {
-      var handler = PaystackPop.setup({
-        key: 'pk_test_7ab8e99537ac12c9e30933d7d185af42c1d892b7', // TODO: replace with your real Paystack PUBLIC key if different from Graxie's
-        email: 'customer@example.com', // TODO: collect from a form field if you want real customer emails
-        amount: amountNaira * 100,
-        currency: 'NGN',
-        metadata: { item: itemName },
-        callback: function (response) {
-          document.getElementById('payModalText').innerText =
-            'Thanks for buying "' + itemName + '". Tap below and send your receipt so Flowerboy can send your access.';
-          document.getElementById('payModal').style.display = 'flex';
-        },
-        onClose: function () {}
-      });
-      handler.openIframe();
-    }
-  </script> -->
+        function payForSelectedCourses() {
+            const checked = document.querySelectorAll<HTMLInputElement>(
+                ".course-pick:checked",
+            );
+            if (checked.length !== 2) return;
+            const names = Array.from(checked).map((c) => c.value);
+            payFor(30000, names.join(" + "));
+        }
+
+        async function payFor(amountNaira: any, itemName: any) {
+            console.log(`Data`, { pk, url, clientUrl });
+            try {
+                const res = await fetch(`${url}/payment/create`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "baggit-public-key": pk,
+                    },
+                    body: JSON.stringify({
+                        reference: crypto.randomUUID(),
+                        amount: amountNaira,
+                        callbackUrl: clientUrl,
+                        metadata: { itemName, merchantName: "Flowerboy Sales" },
+                    }),
+                });
+                const data = await res.json();
+
+                if (data?.paymentUrl) {
+                    const payUrl = new URL(data.paymentUrl);
+                    payUrl.searchParams.set("merchantName", "Flowerboy Sales");
+                    payUrl.searchParams.set("merchantCallbackUrl", clientUrl);
+                    payUrl.searchParams.set("pk", pk);
+
+                    window.location.href = payUrl.toString();
+                } else {
+                    console.error("No paymentUrl in response", data);
+                }
+            } catch (err) {
+                console.error("Payment error", err);
+            }
+        }
+
+        // Expose to inline onclick/onchange handlers
+        window.updatePickCount = updatePickCount;
+        window.payForSelectedCourses = payForSelectedCourses;
+        window.payFor = payFor;
+        // var handler = PaystackPop.setup({
+        //   key: 'pk_test_7ab8e99537ac12c9e30933d7d185af42c1d892b7', // TODO: replace with your real Paystack PUBLIC key if different from Graxie's
+        //   email: 'customer@example.com', // TODO: collect from a form field if you want real customer emails
+        //   amount: amountNaira * 100,
+        //   currency: 'NGN',
+        //   metadata: { item: itemName },
+        //   callback: function (response) {
+        //     document.getElementById('payModalText').innerText =
+        //       'Thanks for buying "' + itemName + '". Tap below and send your receipt so Flowerboy can send your access.';
+        //     document.getElementById('payModal').style.display = 'flex';
+        //   },
+        //   onClose: function () {}
+        // });
+        // handler.openIframe();
+        // }
+    </script>
 </BaseLayout>
