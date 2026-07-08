@@ -841,7 +841,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         async function payFor(amountNaira: any, itemName: any) {
             console.log(`Data`, { pk, url, clientUrl });
             try {
-                const res = await fetch(`${url}/payment/create`, {
+                const res = await fetch(`${url}/v1/payment/create`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
