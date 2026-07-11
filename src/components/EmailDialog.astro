@@ -1,203 +1,230 @@
 <style is:global>
-  .email-dialog {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 100;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  }
-  .email-dialog--open {
-    display: flex;
-  }
-  .email-dialog__backdrop {
-    position: absolute;
-    inset: 0;
-    background: rgba(28, 20, 16, 0.6);
-  }
-  .email-dialog__card {
-    position: relative;
-    background: var(--cream, #fff6ec);
-    border-radius: 14px;
-    padding: 32px 24px 28px;
-    max-width: 380px;
-    width: 100%;
-    text-align: center;
-    border-top: 4px solid var(--flame, #ff5f1f);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    animation: email-dialog-enter 0.3s ease-out;
-  }
-  @keyframes email-dialog-enter {
-    from {
-      opacity: 0;
-      transform: scale(0.95) translateY(10px);
+    .email-dialog {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
     }
-    to {
-      opacity: 1;
-      transform: scale(1) translateY(0);
+    .email-dialog--open {
+        display: flex;
     }
-  }
-  .email-dialog__flame {
-    width: 40px;
-    height: 40px;
-    border-radius: 50% 50% 50% 0;
-    background: var(--flame, #ff5f1f);
-    transform: rotate(45deg);
-    margin: 0 auto 16px;
-  }
-  .email-dialog__title {
-    font-family: "Archivo Black", sans-serif;
-    font-size: 20px;
-    line-height: 1.2;
-    margin-bottom: 8px;
-    color: var(--ink, #1c1410);
-  }
-  .email-dialog__desc {
-    font-size: 14px;
-    color: var(--ink-soft, #5c5048);
-    margin-bottom: 22px;
-    line-height: 1.4;
-  }
-  .email-dialog__input {
-    width: 100%;
-    padding: 12px 14px;
-    border: 2px solid var(--line, #e8d9c5);
-    border-radius: 10px;
-    font-family: "Inter", sans-serif;
-    font-size: 15px;
-    color: var(--ink, #1c1410);
-    background: #fff;
-    outline: none;
-    transition: border-color 0.2s;
-    box-sizing: border-box;
-  }
-  .email-dialog__input:focus {
-    border-color: var(--flame, #ff5f1f);
-  }
-  .email-dialog__input::placeholder {
-    color: #b0a69a;
-  }
-  .email-dialog__error {
-    font-family: "Space Mono", monospace;
-    font-size: 11px;
-    color: var(--ember, #c2410c);
-    min-height: 18px;
-    margin: 8px 0 0;
-    letter-spacing: 0.3px;
-  }
-  .email-dialog__btn {
-    width: 100%;
-    background: var(--flame, #ff5f1f);
-    color: var(--cream, #fff6ec);
-    border: none;
-    border-radius: 10px;
-    padding: 14px;
-    font-family: "Archivo Black", sans-serif;
-    font-size: 14px;
-    letter-spacing: 0.3px;
-    cursor: pointer;
-    margin-top: 16px;
-    transition: background 0.15s;
-  }
-  .email-dialog__btn:hover {
-    background: var(--ember, #c2410c);
-  }
-  .email-dialog__btn:active {
-    transform: translateY(1px);
-  }
-  .email-dialog__skip {
-    background: none;
-    border: none;
-    color: var(--ink-soft, #5c5048);
-    font-family: "Inter", sans-serif;
-    font-size: 12.5px;
-    text-decoration: underline;
-    cursor: pointer;
-    margin-top: 14px;
-    padding: 4px;
-    opacity: 0.7;
-  }
-  .email-dialog__skip:hover {
-    opacity: 1;
-  }
+    .email-dialog__backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(28, 20, 16, 0.6);
+    }
+    .email-dialog__card {
+        position: relative;
+        background: var(--cream, #fff6ec);
+        border-radius: 14px;
+        padding: 32px 24px 28px;
+        max-width: 380px;
+        width: 100%;
+        text-align: center;
+        border-top: 4px solid var(--flame, #ff5f1f);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        animation: email-dialog-enter 0.3s ease-out;
+    }
+    @keyframes email-dialog-enter {
+        from {
+            opacity: 0;
+            transform: scale(0.95) translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+    }
+    .email-dialog__flame {
+        width: 40px;
+        height: 40px;
+        border-radius: 50% 50% 50% 0;
+        background: var(--flame, #ff5f1f);
+        transform: rotate(45deg);
+        margin: 0 auto 16px;
+    }
+    .email-dialog__title {
+        font-family: "Archivo Black", sans-serif;
+        font-size: 20px;
+        line-height: 1.2;
+        margin-bottom: 8px;
+        color: var(--ink, #1c1410);
+    }
+    .email-dialog__desc {
+        font-size: 14px;
+        color: var(--ink-soft, #5c5048);
+        margin-bottom: 22px;
+        line-height: 1.4;
+    }
+    .email-dialog__input {
+        width: 100%;
+        padding: 12px 14px;
+        border: 2px solid var(--line, #e8d9c5);
+        border-radius: 10px;
+        font-family: "Inter", sans-serif;
+        font-size: 15px;
+        color: var(--ink, #1c1410);
+        background: #fff;
+        outline: none;
+        transition: border-color 0.2s;
+        box-sizing: border-box;
+    }
+    .email-dialog__input:focus {
+        border-color: var(--flame, #ff5f1f);
+    }
+    .email-dialog__input::placeholder {
+        color: #b0a69a;
+    }
+    .email-dialog__error {
+        font-family: "Space Mono", monospace;
+        font-size: 11px;
+        color: var(--ember, #c2410c);
+        min-height: 18px;
+        margin: 8px 0 0;
+        letter-spacing: 0.3px;
+    }
+    .email-dialog__btn {
+        width: 100%;
+        background: var(--flame, #ff5f1f);
+        color: var(--cream, #fff6ec);
+        border: none;
+        border-radius: 10px;
+        padding: 14px;
+        font-family: "Archivo Black", sans-serif;
+        font-size: 14px;
+        letter-spacing: 0.3px;
+        cursor: pointer;
+        margin-top: 16px;
+        transition: background 0.15s;
+    }
+    .email-dialog__btn:hover {
+        background: var(--ember, #c2410c);
+    }
+    .email-dialog__btn:active {
+        transform: translateY(1px);
+    }
+    .email-dialog__skip {
+        background: none;
+        border: none;
+        color: var(--ink-soft, #5c5048);
+        font-family: "Inter", sans-serif;
+        font-size: 12.5px;
+        text-decoration: underline;
+        cursor: pointer;
+        margin-top: 14px;
+        padding: 4px;
+        opacity: 0.7;
+    }
+    .email-dialog__skip:hover {
+        opacity: 1;
+    }
 </style>
 
 <div id="emailDialog" class="email-dialog">
-  <div class="email-dialog__backdrop" id="emailDialogBackdrop"></div>
-  <div class="email-dialog__card">
-    <div class="email-dialog__flame"></div>
-    <h2 class="email-dialog__title">Stay in the loop</h2>
-    <p class="email-dialog__desc">
-      Get updates on new courses, books, and exclusive offers from Flowerboy.
-    </p>
-    <input
-      type="email"
-      id="emailInput"
-      class="email-dialog__input"
-      placeholder="your@email.com"
-      autocomplete="email"
-      enterkeyhint="done"
-    />
-    <p id="emailError" class="email-dialog__error"></p>
-    <button id="emailContinue" class="email-dialog__btn">Continue</button>
-    <button id="emailSkip" class="email-dialog__skip">Skip for now</button>
-  </div>
+    <div class="email-dialog__backdrop" id="emailDialogBackdrop"></div>
+    <div class="email-dialog__card">
+        <div class="email-dialog__flame"></div>
+        <h2 class="email-dialog__title">Stay in the loop</h2>
+        <p class="email-dialog__desc">
+            Get updates on new courses, books, and exclusive offers from
+            Flowerboy.
+        </p>
+        <input
+            type="email"
+            id="emailInput"
+            class="email-dialog__input"
+            placeholder="your@email.com"
+            autocomplete="email"
+            enterkeyhint="done"
+        />
+        <input
+            type="text"
+            id="nameInput"
+            class="email-dialog__input"
+            placeholder="John Doe"
+            autocomplete="name"
+            enterkeyhint="done"
+        />
+        <p id="emailError" class="email-dialog__error"></p>
+        <button id="emailContinue" class="email-dialog__btn">Continue</button>
+        <button id="emailSkip" class="email-dialog__skip">Skip for now</button>
+    </div>
 </div>
 
 <script>
-  import { getEmail, setEmail } from '../stores/sessionStore';
+    import {
+        getEmail,
+        setEmail,
+        setName,
+        getName,
+    } from "../stores/sessionStore";
 
-  const dialog = document.getElementById('emailDialog');
-  const backdrop = document.getElementById('emailDialogBackdrop');
-  const input = document.getElementById('emailInput');
-  const error = document.getElementById('emailError');
-  const continueBtn = document.getElementById('emailContinue');
-  const skipBtn = document.getElementById('emailSkip');
+    const dialog = document.getElementById("emailDialog");
+    const backdrop = document.getElementById("emailDialogBackdrop");
+    const emailInput = document.getElementById("emailInput");
+    const nameInput = document.getElementById("nameInput");
+    const error = document.getElementById("emailError");
+    const continueBtn = document.getElementById("emailContinue");
+    const skipBtn = document.getElementById("emailSkip");
 
-  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  function show() {
-    dialog.classList.add('email-dialog--open');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function hide() {
-    dialog.classList.remove('email-dialog--open');
-    document.body.style.overflow = '';
-  }
-
-  function handleContinue() {
-    const email = input.value.trim();
-    if (!EMAIL_RE.test(email)) {
-      error.textContent = 'Please enter a valid email address';
-      return;
+    function show() {
+        dialog.classList.add("email-dialog--open");
+        document.body.style.overflow = "hidden";
     }
-    error.textContent = '';
-    setEmail(email);
-    hide();
-  }
 
-  function handleSkip() {
-    hide();
-  }
-
-  if (!getEmail()) {
-    show();
-  }
-
-  input.addEventListener('input', () => {
-    if (error.textContent) error.textContent = '';
-  });
-
-  input.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      handleContinue();
+    function hide() {
+        dialog.classList.remove("email-dialog--open");
+        document.body.style.overflow = "";
     }
-  });
 
-  continueBtn.addEventListener('click', handleContinue);
-  skipBtn.addEventListener('click', handleSkip);
-  backdrop.addEventListener('click', handleSkip);
+    function handleContinue() {
+        const email = emailInput.value.trim();
+        const name = nameInput.value.trim();
+        if (!EMAIL_RE.test(email)) {
+            error.textContent = "Please enter a valid email address";
+            return;
+        }
+        error.textContent = "";
+        setEmail(email);
+        setName(name);
+        hide();
+    }
+
+    function handleSkip() {
+        hide();
+    }
+
+    if (!getEmail() || !getName()) {
+        show();
+    }
+
+    emailInput.addEventListener("input", () => {
+        if (error.textContent) error.textContent = "";
+    });
+
+    emailInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            handleContinue();
+        }
+    });
+    nameInput.addEventListener("input", () => {
+        if (error.textContent) error.textContent = "";
+    });
+
+    nameInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            handleContinue();
+        }
+    });
+
+    continueBtn.addEventListener("click", handleContinue);
+    skipBtn.addEventListener("click", handleSkip);
+    backdrop.addEventListener("click", handleSkip);
 </script>

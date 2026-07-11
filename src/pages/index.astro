@@ -808,6 +808,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
     <!-- <script is:inline src="https://js.paystack.co/v1/inline.js"></script> -->
     <script>
+        import { getEmail, getName } from "../stores/sessionStore";
         const pk = import.meta.env.PUBLIC_BAGGIT_PK;
         const url = import.meta.env.PUBLIC_BAGGIT_API_URL;
         const clientUrl = import.meta.env.PUBLIC_CLIENT_URL;
@@ -841,26 +842,33 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         async function payFor(amountNaira: any, itemName: any) {
             console.log(`Data`, { pk, url, clientUrl });
             try {
-                const res = await fetch(`${url}/v1/payment/create`, {
+                const res = await fetch(`${url}/v1/checkout`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                         "baggit-public-key": pk,
                     },
                     body: JSON.stringify({
-                        reference: crypto.randomUUID(),
                         amount: amountNaira,
+                        currency: "NGN",
+                        reference: crypto.randomUUID(),
                         callbackUrl: clientUrl,
-                        metadata: { itemName, merchantName: "Flowerboy Sales" },
+                        metadata: { itemName, merchantName: "Flowerboy" },
+                        customer: {
+                            email: getEmail(),
+                            name: getName(),
+                        },
                     }),
                 });
                 const data = await res.json();
+                const paymentUrl = data.defaultPayment?.metadata?.url;
 
-                if (data?.paymentUrl) {
-                    const payUrl = new URL(data.paymentUrl);
-                    payUrl.searchParams.set("merchantName", "Flowerboy Sales");
+                if (paymentUrl) {
+                    const payUrl = new URL(paymentUrl);
+                    payUrl.searchParams.set("merchantName", "Flowerboy");
                     payUrl.searchParams.set("merchantCallbackUrl", clientUrl);
-                    payUrl.searchParams.set("pk", pk);
+                    payUrl.searchParams.set("email", getEmail());
+                    payUrl.searchParams.set("name", getName());
 
                     window.location.href = payUrl.toString();
                 } else {
