@@ -78,6 +78,9 @@
     .email-dialog__input::placeholder {
         color: #b0a69a;
     }
+    .email-dialog__input + .email-dialog__input {
+        margin-top: 12px;
+    }
     .email-dialog__error {
         font-family: "Space Mono", monospace;
         font-size: 11px;
@@ -106,25 +109,10 @@
     .email-dialog__btn:active {
         transform: translateY(1px);
     }
-    .email-dialog__skip {
-        background: none;
-        border: none;
-        color: var(--ink-soft, #5c5048);
-        font-family: "Inter", sans-serif;
-        font-size: 12.5px;
-        text-decoration: underline;
-        cursor: pointer;
-        margin-top: 14px;
-        padding: 4px;
-        opacity: 0.7;
-    }
-    .email-dialog__skip:hover {
-        opacity: 1;
-    }
 </style>
 
 <div id="emailDialog" class="email-dialog">
-    <div class="email-dialog__backdrop" id="emailDialogBackdrop"></div>
+    <div class="email-dialog__backdrop"></div>
     <div class="email-dialog__card">
         <div class="email-dialog__flame"></div>
         <h2 class="email-dialog__title">Stay in the loop</h2>
@@ -133,42 +121,32 @@
             Flowerboy.
         </p>
         <input
+            type="text"
+            id="nameInput"
+            class="email-dialog__input"
+            placeholder="Your name"
+            autocomplete="name"
+        />
+        <input
             type="email"
             id="emailInput"
             class="email-dialog__input"
             placeholder="your@email.com"
             autocomplete="email"
-            enterkeyhint="done"
-        />
-        <input
-            type="text"
-            id="nameInput"
-            class="email-dialog__input"
-            placeholder="John Doe"
-            autocomplete="name"
-            enterkeyhint="done"
         />
         <p id="emailError" class="email-dialog__error"></p>
         <button id="emailContinue" class="email-dialog__btn">Continue</button>
-        <button id="emailSkip" class="email-dialog__skip">Skip for now</button>
     </div>
 </div>
 
 <script>
-    import {
-        getEmail,
-        setEmail,
-        setName,
-        getName,
-    } from "../stores/sessionStore";
+    import { getEmail, getName, setEmail, setName } from "../stores/sessionStore";
 
     const dialog = document.getElementById("emailDialog");
-    const backdrop = document.getElementById("emailDialogBackdrop");
     const emailInput = document.getElementById("emailInput");
     const nameInput = document.getElementById("nameInput");
     const error = document.getElementById("emailError");
     const continueBtn = document.getElementById("emailContinue");
-    const skipBtn = document.getElementById("emailSkip");
 
     const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -183,28 +161,35 @@
     }
 
     function handleContinue() {
-        const email = emailInput.value.trim();
         const name = nameInput.value.trim();
-        if (!EMAIL_RE.test(email)) {
-            error.textContent = "Please enter a valid email address";
+        const email = emailInput.value.trim();
+
+        if (!name) {
+            error.textContent = "Please enter your name";
+            nameInput.focus();
             return;
         }
+        if (!EMAIL_RE.test(email)) {
+            error.textContent = "Please enter a valid email address";
+            emailInput.focus();
+            return;
+        }
+
         error.textContent = "";
-        setEmail(email);
         setName(name);
+        setEmail(email);
         hide();
     }
 
-    function handleSkip() {
-        hide();
-    }
-
-    if (!getEmail() || !getName()) {
+    if (!getName() || !getEmail()) {
         show();
     }
 
-    emailInput.addEventListener("input", () => {
-        if (error.textContent) error.textContent = "";
+    nameInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            emailInput.focus();
+        }
     });
 
     emailInput.addEventListener("keydown", (e) => {
@@ -213,18 +198,6 @@
             handleContinue();
         }
     });
-    nameInput.addEventListener("input", () => {
-        if (error.textContent) error.textContent = "";
-    });
-
-    nameInput.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-            e.preventDefault();
-            handleContinue();
-        }
-    });
 
     continueBtn.addEventListener("click", handleContinue);
-    skipBtn.addEventListener("click", handleSkip);
-    backdrop.addEventListener("click", handleSkip);
 </script>

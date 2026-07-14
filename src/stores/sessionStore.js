@@ -17,6 +17,7 @@ export function setEmail(email) {
     // sessionStorage not available
   }
 }
+
 export function getName() {
   try {
     return sessionStorage.getItem(SESSION_NAME_KEY) || '';
@@ -25,10 +26,10 @@ export function getName() {
   }
 }
 
-export function setName(email) {
+export function setName(name) {
   try {
-    sessionStorage.setItem(SESSION_NAME_KEY, email);
-    window.dispatchEvent(new CustomEvent('email-changed', { detail: { email } }));
+    sessionStorage.setItem(SESSION_NAME_KEY, name);
+    window.dispatchEvent(new CustomEvent('name-changed', { detail: { name } }));
   } catch {
     // sessionStorage not available
   }

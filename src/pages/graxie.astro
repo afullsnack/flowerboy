@@ -357,7 +357,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
                     <li>Real-time shipping & customs updates</li>
                     <li>Direct line to Graxie's team for questions</li>
                 </ul>
-                <button class="cta-btn" id="payBtn"
+                <button
+                    class="cta-btn"
+                    id="payBtn"
+                    onclick="payFor(30000, 'Private Invite')"
                     >Pay ₦30,000 &amp; Get My Invite</button
                 >
                 <div class="secure-note">🔒 Secure payment via Baggit</div>
@@ -420,25 +423,52 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     </div>
 
     <!-- <script is:inline src="https://js.paystack.co/v1/inline.js"></script> -->
-    <!-- <script is:inline>
-    document.getElementById('payBtn').addEventListener('click', function () {
-      var handler = PaystackPop.setup({
-        key: 'pk_test_7ab8e99537ac12c9e30933d7d185af42c1d892b7',
-        email: 'customer@example.com', // TODO: collect this from a form field before charging, see note below
-        amount: 3000000, // amount in kobo => ₦30,000
-        currency: 'NGN',
-        callback: function (response) {
-          // Payment succeeded — show the Telegram link
-          document.querySelector('.ticket-bottom').innerHTML =
-            '<p style="font-weight:700;color:#1B3A6B;margin-bottom:10px;">✅ Payment received!</p>' +
-            '<p style="font-size:14px;margin-bottom:14px;">Tap below to join the channel now.</p>' +
-            '<a href="https://t.me/preoderwithgraxie" target="_blank" style="display:block;text-align:center;background:#1B3A6B;color:#fff;padding:14px;border-radius:12px;font-weight:700;text-decoration:none;">Join Telegram Channel</a>';
-        },
-        onClose: function () {
-          // user closed the popup without paying
+    <script>
+        import { getEmail, getName } from "../stores/sessionStore";
+        const pk = import.meta.env.PUBLIC_BAGGIT_PK;
+        const url = import.meta.env.PUBLIC_BAGGIT_API_URL;
+        const clientUrl = import.meta.env.PUBLIC_CLIENT_URL;
+        async function payFor(amountNaira: any, itemName: any) {
+            console.log(`Data`, { pk, url, clientUrl });
+            try {
+                const res = await fetch(`${url}/v1/checkout`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "baggit-public-key": pk,
+                    },
+                    body: JSON.stringify({
+                        amount: amountNaira,
+                        currency: "NGN",
+                        reference: crypto.randomUUID(),
+                        callbackUrl: clientUrl,
+                        metadata: { itemName, merchantName: "Flowerboy" },
+                        customer: {
+                            email: getEmail(),
+                            name: getName(),
+                        },
+                    }),
+                });
+                const data = await res.json();
+                const paymentUrl = data.defaultPayment?.metadata?.url;
+
+                if (paymentUrl) {
+                    const payUrl = new URL(paymentUrl);
+                    payUrl.searchParams.set("merchantName", "Flowerboy");
+                    payUrl.searchParams.set("merchantCallbackUrl", clientUrl);
+                    payUrl.searchParams.set("email", getEmail());
+                    payUrl.searchParams.set("name", getName());
+
+                    window.location.href = payUrl.toString();
+                } else {
+                    console.error("No paymentUrl in response", data);
+                }
+            } catch (err) {
+                console.error("Payment error", err);
+            }
         }
-      });
-      handler.openIframe();
-    });
-  </script> -->
+
+        // Expose to inline onclick/onchange handlers
+        window.payFor = payFor;
+    </script>
 </BaseLayout>
